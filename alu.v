@@ -17,7 +17,7 @@ module alu(A, B, out, code);
             4'b0110: out=A|B; //OR
             4'b0111: out=A<<1; //logical shift left
             4'b1000: out=A>>1; //logical shift right
-            default: out=[len-1]'b0; //defualt case
+            default: out=0; //defualt case
         endcase
     end
 endmodule

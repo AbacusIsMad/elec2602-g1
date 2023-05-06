@@ -5,6 +5,10 @@ module var_reg(d, clk, enable, q, reset);
 	output reg[LEN-1:0] q;
 	input clk, reset, enable;
 	
+	initial begin
+		q <= 0;
+	end
+	
 	always @(posedge clk or posedge reset) begin
 		
 		if (reset) begin

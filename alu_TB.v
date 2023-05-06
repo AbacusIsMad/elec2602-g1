@@ -7,6 +7,7 @@ module alu_TB;
 
  //output
  reg[7:0] out;
+ reg[3:0] count;
 
  alu#(.LEN(8)) alutest(.A(A),.B(B),.code(code),.out(out));
 

@@ -5,6 +5,10 @@ module tri_buf(in, out, enable);
 	output reg[LEN-1:0] out;
 	input enable;
 	
+	initial begin
+		out = {(LEN){1'bz}};
+	end
+	
 	always @(enable or in) begin
 		
 		if (enable) begin
