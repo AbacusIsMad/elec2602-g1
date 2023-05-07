@@ -5,7 +5,7 @@ module pipeline(instF, instD, instC, instW, clk, reset);
 	output reg[WIDTH-1:0] instD, instC, instW;
 	input clk, reset;
 	
-	always @(posedge clk or posedge reset) begin
+	always @(posedge clk) begin
 		if (reset) begin
 			instD <= 0;
 			instC <= 0;
