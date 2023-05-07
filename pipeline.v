@@ -33,7 +33,7 @@ module pipeline2(inst, clk, reset, instC, instW, typeC, typeW, immC, immW);
 	
 	
 	
-	always @(posedge clk or posedge reset) begin
+	always @(posedge clk) begin
 		if (reset) begin
 			instC <= 0; instW <= 0;
 			typeC <= 0; typeW <= 0;

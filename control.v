@@ -18,7 +18,8 @@ module control(clk, inst, instC, immC, typeC, busOut1, busOut2, busIn, alu_out);
 	input wire[31:0] inst;
 	output wire[31:0] instC, immC;
 	output wire[3:0] typeC;
-	pipeline2 pipeline_real(.inst(inst), .clk(clk), .reset(), 
+	output wire break_pipe;
+	pipeline2 pipeline_real(.inst(inst), .clk(clk), .reset(break_pipe), //the reset comes from the pc!
 		.instC(instC), .instW(), .typeC(typeC), .typeW(), .immC(immC), .immW());
 	
 	//control circuits
@@ -58,7 +59,7 @@ module control(clk, inst, instC, immC, typeC, busOut1, busOut2, busIn, alu_out);
 	//the pc. uses the negative edge to update!
 	wire[31:0] pc_out;
 	pc_manager pc_real(.val1(busOut1), .imm(immC), ._type(typeC),
-		.clk(~clk), .enable(cal_ctl[BRCH_CTL]), .branch(), .stop(), .pc(), .pc2(), .pcOut(pc_out), .breakPipe());
+		.clk(~clk), .enable(cal_ctl[BRCH_CTL]), .branch(), .stop(), .pc(), .pc2(), .pcOut(pc_out), .breakPipe(break_pipe));
 	tri_buf pc_tri(.in(pc_out), .out(busIn), .enable(wri_ctl[PC_CTL]));
 
 endmodule
