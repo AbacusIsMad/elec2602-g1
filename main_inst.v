@@ -8,8 +8,8 @@ module main_inst(HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, SW, KEY, LEDR, clk);
 	
 	wire[31:0] hex_tmp;
 	wire block;
-	control main(.clkin(SW[1]), .hex_out(hex_tmp),
-		.led_out(LEDR[9:0]), .num_in(SW[9:2]), .num_clk(KEY[3]),	.block(block));
+	control main(.clkin(KEY[1]), .hex_out(),
+		.led_out(LEDR[9:0]), .num_in(SW[9:2]), .num_clk(KEY[3]),	.block(block), .pc_fetch(hex_tmp));
 	
 	//hex display for hexout.
 	hex_display h0(.data(hex_tmp[3:0]), .disp(HEX0), .block(hex_tmp[31]));
