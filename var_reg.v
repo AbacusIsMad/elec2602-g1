@@ -2,12 +2,8 @@ module var_reg(d, clk, enable, q, reset);
 	parameter LEN = 8;
 
 	input[LEN-1:0] d;
-	output reg[LEN-1:0] q;
+	output reg[LEN-1:0] q = 0;
 	input clk, reset, enable;
-	
-	initial begin
-		q <= 0;
-	end
 	
 	always @(posedge clk or posedge reset) begin
 		

@@ -24,8 +24,8 @@ module pipeline2(inst, clk, reset, instC, instW, typeC, typeW, immC, immW);
 	parameter WIDTH = 32;
 	input[WIDTH-1:0] inst;
 	input clk, reset;
-	output reg[3:0] typeC, typeW;
-	output reg[WIDTH-1:0] immC, immW, instC, instW;
+	output reg[3:0] typeC = 0, typeW = 0;
+	output reg[WIDTH-1:0] immC = 0, immW = 0, instC = 0, instW = 0;
 	
 	wire[3:0] tempT;
 	wire[WIDTH-1:0] tempI;

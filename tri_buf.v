@@ -1,5 +1,5 @@
 module tri_buf(in, out, enable);
-	parameter LEN = 8;
+	parameter LEN = 32;
 
 	input[LEN-1:0] in;
 	output reg[LEN-1:0] out;

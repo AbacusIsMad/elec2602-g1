@@ -37,7 +37,7 @@ module tri_buf_TB;
 	always @(count) begin
 		case (count)
 			0: begin reset = 1; end
-			1: begin reset = 0; instIn = 32'h80078623;end
+			1: begin reset = 0; instIn = 32'h7ff00113;end
 			2: begin instIn = 32'h00c000ef;end
 		endcase
 	end

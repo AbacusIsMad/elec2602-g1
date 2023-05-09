@@ -4,7 +4,7 @@ module pc_manager(val1, imm, _type, clk, enable, branch, stop, pc, pc2, pcOut, b
 	input[3:0] _type;
 	input clk, enable, branch, stop;
 	
-	output reg[31:0] pc = 0, pc2 = 0, pcOut = 0;
+	output reg[31:0] pc = -4, pc2 = 0, pcOut = 0;
 	output reg breakPipe = 0;
 	
 	always @(posedge clk) begin
