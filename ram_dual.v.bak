@@ -32,19 +32,19 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	reg[4:0] s_enable;
 	reg[31:0] mem_in; //this is used for reorganising the data before putting it in
 	//r1 is aligned to the 4 byte boundary, r2 is offeset by 1, and so on.
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/add1.txt"), .OFFSET(3))
+	eight_bit_ram#(.FILENAME("C:/Users/gengr/Desktop/code/ELEC2602/project/add1.txt"), .OFFSET(3))
 		r1(.data(mem_in[7:0]), .mem_addr(mem_addr), .pc_addr(pc_addr),
 		.enable(enable), .we(we & s_enable[0]),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[7:0]), .pc_q(pc_tmp[7:0]));
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/add2.txt"), .OFFSET(2))
+	eight_bit_ram#(.FILENAME("C:/Users/gengr/Desktop/code/ELEC2602/project/add2.txt"), .OFFSET(2))
 		r2(.data(mem_in[15:8]), .mem_addr(mem_addr), .pc_addr(pc_addr),
 		.enable(enable), .we(we & s_enable[1]),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[15:8]), .pc_q(pc_tmp[15:8]));
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/add3.txt"), .OFFSET(1))
+	eight_bit_ram#(.FILENAME("C:/Users/gengr/Desktop/code/ELEC2602/project/add3.txt"), .OFFSET(1))
 		r3(.data(mem_in[23:16]), .mem_addr(mem_addr), .pc_addr(pc_addr),
 		.enable(enable), .we(we & s_enable[2]),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[23:16]), .pc_q(pc_tmp[23:16]));
-	eight_bit_ram#(.FILENAME("CC:/Users/14133/Documents/GitHub/elec2602-g1/add4.txt"), .OFFSET(0))
+	eight_bit_ram#(.FILENAME("C:/Users/gengr/Desktop/code/ELEC2602/project/add4.txt"), .OFFSET(0))
 		r4(.data(mem_in[31:24]), .mem_addr(mem_addr), .pc_addr(pc_addr),
 		.enable(enable), .we(we & s_enable[3]),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[31:24]), .pc_q(pc_tmp[31:24]));
