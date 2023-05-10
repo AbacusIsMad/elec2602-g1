@@ -1,5 +1,5 @@
 module eight_bit_ram(data, mem_addr, pc_addr, enable, we, mem_clk, pc_clk, mem_q, pc_q);
-	parameter FILENAME = "C:/Users/14133/Documents/GitHub/elec2602-g1/empty.txt";
+	parameter FILENAME = "C:/Users/gengr/Desktop/code/ELEC2602/project/empty.txt";
 	parameter OFFSET = 0;
 
 	input [7:0] data;

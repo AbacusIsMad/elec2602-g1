@@ -1,15 +1,16 @@
-module main_inst(HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, SW, KEY, LEDR, clk);
+module main_inst(HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, SW, KEY, LEDR, CLOCK_50);
 	input [9:0] SW;
 	input [3:0] KEY;
 	output [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5;
 	output [9:0] LEDR;
 	
-	input clk;
+	input CLOCK_50;
 	
 	wire[31:0] hex_tmp, pc_tmp;
-	wire block;
-	control main(.clkin(KEY[1]), .hex_out(hex_tmp),
-		.led_out(), .num_in(SW[9:2]), .num_clk(KEY[3]),	.block(block), .pc_fetch(pc_tmp));
+	wire block, key_tmp;
+	debounce(.pb_1(~KEY[3]),.clk(CLOCK_50),.pb_out(key_tmp));
+	control main(.clkin(CLOCK_50), .hex_out(hex_tmp),
+		.led_out(), .num_in(SW[9:2]), .num_clk(key_tmp),	.block(block), .pc_fetch(pc_tmp));
 	
 	//hex display for hexout.
 	hex_display h0(.data(hex_tmp[3:0]), .disp(HEX0), .block(hex_tmp[31]));
@@ -21,5 +22,6 @@ module main_inst(HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, SW, KEY, LEDR, clk);
 	hex_display num_in0(.data(SW[5:2]), .disp(HEX4), .block(~block)); //inverted cause we want it to show when blocking
 	hex_display num_in1(.data(SW[9:6]), .disp(HEX5), .block(~block));
 
-	assign LEDR [9:0] = pc_tmp [11:2];
+
+	assign LEDR [9:0] = pc_tmp [9:0];
 endmodule
