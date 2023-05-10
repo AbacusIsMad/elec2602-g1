@@ -15,8 +15,8 @@ module control_TB();
 	control ctl_test(.clkin(clk), .clk(clkout), .inst(inst), .instC(instC), .immC(immC), .typeC(typeC),
 		.busOut1(busOut1), .busOut2(busOut2), .busIn(busIn), .do_brch(do_brch), .break_pipe(break_pipe), .pc_fetch(pc),
 		.hex_out(), .led_out(), .num_in(count), .num_clk(num_clk),
-		.block(block),
-		.regs(regs)
+		.block(block)
+		//,.regs(regs)
 	);
 	
 	initial begin
