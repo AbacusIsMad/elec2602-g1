@@ -7,10 +7,11 @@ module main_inst(HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, SW, KEY, LEDR, CLOCK_50);
 	input CLOCK_50;
 	
 	wire[31:0] hex_tmp, pc_tmp;
-	wire block, key_tmp;
+	wire block, key_tmp, key2_tmp;
 	debounce(.pb_1(~KEY[3]),.clk(CLOCK_50),.pb_out(key_tmp));
+	debounce(.pb_1(~KEY[2]),.clk(CLOCK_50),.pb_out(key2_tmp));
 	control main(.clkin(CLOCK_50), .hex_out(hex_tmp),
-		.led_out(), .num_in(SW[9:2]), .num_clk(key_tmp),	.block(block), .pc_fetch(pc_tmp));
+		.led_out(), .num_in(SW[9:2]), .num_clk(key_tmp), .block(block), .pc_fetch(pc_tmp), .reset(key2_tmp));
 	
 	//hex display for hexout.
 	hex_display h0(.data(hex_tmp[3:0]), .disp(HEX0), .block(hex_tmp[31]));

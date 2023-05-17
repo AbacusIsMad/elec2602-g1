@@ -1,6 +1,6 @@
 module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr, 
 	pc_addr, mem_q, pc_q, hex_out, led_out, num_in, num_clk, block, stop, real_clk,
-	pc_override, inst_data, inst_addr, mem_addr_tmp); //the setup sequence
+	pc_override, inst_data, inst_addr, mem_addr_tmp, reset); //the setup sequence
 	
 	input[31:0] data;
 	input we, enable, mem_clk, pc_clk, sext, real_clk;
@@ -11,6 +11,7 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	output reg[9:0] led_out = 9'b000000000;
 	input[7:0] num_in;
 	input num_clk;
+	input reset;
 	
 	input pc_override; //this flag is set to true if setting data
 	input[31:0] inst_data, inst_addr; //this is the data coming in.
@@ -23,7 +24,7 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	//input blocking logic
 	reg prev_num_clk = 0;
 	always @(negedge real_clk) begin //reading block
-		if (~prev_num_clk & num_clk) begin //pseudo rising edge. This goes first because of priority
+		if ((~prev_num_clk & num_clk) | reset) begin //pseudo rising edge. This goes first because of priority
 			block <= 0;
 		end else if (enable && ~we && (mem_addr == 32'h00000816)) begin //this sets block to true.
 			block <= 1;
