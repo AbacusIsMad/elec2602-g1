@@ -47,6 +47,6 @@ module control_TB();
 	
 	assign reset = (count == 10'h315) ? 1 : 0;
 
-	assign num_clk = ((count == 9) || (count == 16) || (count == 22) || (count == 28) || (count == 35)) ? 1 : 0;
+	assign num_clk = ((count == 10'h219) || (count == 10'h229)) ? 1 : 0;
 
 endmodule

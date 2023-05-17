@@ -65,20 +65,30 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	
 	//output ports
 	always @(posedge mem_clk) begin
-		if (enable) begin
-			//writing
-			if (we) begin
-				if (mem_addr == 32'h00000804) begin //hex
-					hex_out <= data;
-				end else if (mem_addr == 32'h00000808) begin //led
-					led_out <= data[9:0];
-				end else if (mem_addr == 32'h0000080c) begin //halt
-					stop <= 1;
+		if (reset) begin
+			hex_out <= 32'h80000000;
+			led_out <= 0;
+		end else if (enable) begin
+				//writing
+				if (we) begin
+					if (mem_addr == 32'h00000804) begin //hex
+						hex_out <= data;
+					end else if (mem_addr == 32'h00000808) begin //led
+						led_out <= data[9:0];
+					end else if (mem_addr == 32'h0000080c) begin //halt
+						//stop <= 1;
+					end
 				end
-			end
 		end
 	end
 	
+	always @(negedge real_clk) begin
+		if (reset) begin
+			stop <= 0;
+		end else if (mem_addr == 32'h0000080c) begin
+			stop <= 1;
+		end
+	end
 
 	//this generates which bytes to write, as well as how to order the result data.
 	reg[31:0] mem_ordered;
