@@ -1,5 +1,6 @@
 module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr, 
-	pc_addr, mem_q, pc_q, hex_out, led_out, num_in, num_clk, block, stop, real_clk);
+	pc_addr, mem_q, pc_q, hex_out, led_out, num_in, num_clk, block, stop, real_clk,
+	pc_override, inst_data, inst_addr, mem_addr_tmp); //the setup sequence
 	
 	input[31:0] data;
 	input we, enable, mem_clk, pc_clk, sext, real_clk;
@@ -10,6 +11,9 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	output reg[9:0] led_out = 9'b000000000;
 	input[7:0] num_in;
 	input num_clk;
+	
+	input pc_override; //this flag is set to true if setting data
+	input[31:0] inst_data, inst_addr; //this is the data coming in.
 	
 	output reg block = 0, stop = 0;
 	
@@ -27,26 +31,35 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 		prev_num_clk <= num_clk; //store old value
 	end
 	
-	//the actual blocks
+	//the actual block
+	output reg[31:0] mem_addr_tmp;
+	always @(pc_override, inst_addr, mem_addr) begin
+		mem_addr_tmp = pc_override ? inst_addr : mem_addr;
+	end
+
 	wire[31:0] mem_tmp, pc_tmp;
 	reg[4:0] s_enable;
 	reg[31:0] mem_in; //this is used for reorganising the data before putting it in
 	//r1 is aligned to the 4 byte boundary, r2 is offeset by 1, and so on.
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/out/add_2_numbers1.txt"), .OFFSET(3))
-		r1(.data(mem_in[7:0]), .mem_addr(mem_addr), .pc_addr(pc_addr),
-		.enable(enable), .we(we & s_enable[0]),
+	parameter f1 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum1.txt";
+	parameter f2 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum2.txt";
+	parameter f3 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum3.txt";
+	parameter f4 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum4.txt";
+	eight_bit_ram#(.FILENAME(f1), .OFFSET(3))
+		r1(.data(mem_in[7:0]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
+		.enable(enable | pc_override), .we((we & s_enable[0]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[7:0]), .pc_q(pc_tmp[7:0]));
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/out/add_2_numbers2.txt"), .OFFSET(2))
-		r2(.data(mem_in[15:8]), .mem_addr(mem_addr), .pc_addr(pc_addr),
-		.enable(enable), .we(we & s_enable[1]),
+	eight_bit_ram#(.FILENAME(f2), .OFFSET(2))
+		r2(.data(mem_in[15:8]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
+		.enable(enable | pc_override), .we((we & s_enable[1]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[15:8]), .pc_q(pc_tmp[15:8]));
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/out/add_2_numbers3.txt"), .OFFSET(1))
-		r3(.data(mem_in[23:16]), .mem_addr(mem_addr), .pc_addr(pc_addr),
-		.enable(enable), .we(we & s_enable[2]),
+	eight_bit_ram#(.FILENAME(f3), .OFFSET(1))
+		r3(.data(mem_in[23:16]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
+		.enable(enable | pc_override), .we((we & s_enable[2]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[23:16]), .pc_q(pc_tmp[23:16]));
-	eight_bit_ram#(.FILENAME("C:/Users/14133/Documents/GitHub/elec2602-g1/out/add_2_numbers4.txt"), .OFFSET(0))
-		r4(.data(mem_in[31:24]), .mem_addr(mem_addr), .pc_addr(pc_addr),
-		.enable(enable), .we(we & s_enable[3]),
+	eight_bit_ram#(.FILENAME(f4), .OFFSET(0))
+		r4(.data(mem_in[31:24]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
+		.enable(enable | pc_override), .we((we & s_enable[3]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[31:24]), .pc_q(pc_tmp[31:24]));
 	
 	//output ports
@@ -94,13 +107,18 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	wire [31:0] in0 = data, in1 = {data[23:0], data[31:24]}, in2 = {data[15:0], data[31:16]}, in3 = {data[7:0], data[31:8]};
 	wire [31:0] ou0 = mem_tmp, ou1 = {mem_tmp[7:0], mem_tmp[31:8]}, ou2 = {mem_tmp[15:0], mem_tmp[31:16]}, ou3 = {mem_tmp[23:0], mem_tmp[31:24]};
 	
-	always @(mem_addr[1:0]) begin
-		case (mem_addr[1:0])
-			2'b00: begin mem_ordered = ou0; mem_in = in0; end
-			2'b01: begin mem_ordered = ou1; mem_in = in1; end
-			2'b10: begin mem_ordered = ou2; mem_in = in2; end
-			2'b11: begin mem_ordered = ou3; mem_in = in3; end
-		endcase
+	always @(mem_addr[1:0], pc_override, inst_data, in0, in1, in2, in3, ou0, ou1, ou2, ou3) begin
+		if (pc_override) begin
+			mem_ordered = 0;
+			mem_in = {inst_data[7:0], inst_data[15:8], inst_data[23:16], inst_data[31:24]}; //swap due to mem input
+		end else begin
+			case (mem_addr[1:0])
+				2'b00: begin mem_ordered = ou0; mem_in = in0; end
+				2'b01: begin mem_ordered = ou1; mem_in = in1; end
+				2'b10: begin mem_ordered = ou2; mem_in = in2; end
+				2'b11: begin mem_ordered = ou3; mem_in = in3; end
+			endcase
+		end
 	end
 	
 	

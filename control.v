@@ -2,7 +2,8 @@ module control(clkin, clk, inst, instC, immC, typeC,
 	busOut1, busOut2, busIn, do_brch, break_pipe, pc_fetch,
 	hex_out, led_out, num_in, num_clk,
 	block,
-	//regs
+	ovrd, instd, insta,
+	regs
 	);
 	parameter CTL_CAL = 7;
 	parameter ZRO_OUT1 = 0;
@@ -60,13 +61,13 @@ module control(clkin, clk, inst, instC, immC, typeC,
 	tri_buf reg_zi(.in(0), .out(busIn), .enable(wri_ctl[ZRO_IN]));
 	
 	//the registers!	
-	//output wire[1023:0] regs;
+	output wire[1023:0] regs;
 	wire[31:0] reg1_out, reg2_out;
 	gen_regs gen_regs_real(.in(busIn), .clk(clk), //use posedge clk
 		.selectR(32'h00000001 << instC[19:15]), .selectR2(32'h00000001 << instC[24:20]), 
 		.selectW(32'h00000001 << instC[11:7]),
 		.reset(), .out(reg1_out), .out2(reg2_out), .enable(wri_ctl[REG_CTL])
-		//,.visible(regs)
+		,.visible(regs)
 		);
 	tri_buf reg_tri1(.in(reg1_out), .out(busOut1), .enable(cal_ctl[REG1_CTL]));
 	tri_buf reg_tri2(.in(reg2_out), .out(busOut2), .enable(cal_ctl[REG2_CTL]));
@@ -81,11 +82,14 @@ module control(clkin, clk, inst, instC, immC, typeC,
 	input [7:0] num_in;
 	input num_clk;
 	
+	output wire ovrd;
+	output wire[31:0] instd, insta;
 	ram_dual ram_real(.data(busOut2), .we(instC[5]), .enable(cal_ctl[RAMIN_CTL]), 
 		.mem_clk(~clk), .size(instC[13:12]), .sext(instC[14]), .pc_clk(clk), 
 		//add the address to immediate
 		.mem_addr(busOut1 + immC), .pc_addr(pc_fetch), .mem_q(ram_out), .pc_q(inst),
-		.hex_out(hex_out), .led_out(led_out), .num_in(num_in), .num_clk(num_clk), .block(block), .stop(stop), .real_clk(clkin));
+		.hex_out(hex_out), .led_out(led_out), .num_in(num_in), .num_clk(num_clk), .block(block), .stop(stop), .real_clk(clkin),
+		.pc_override(ovrd), .inst_data(instd), .inst_addr(insta));
 	
 	tri_buf ram_tri(.in(ram_out), .out(busIn), .enable(wri_ctl[RAMOUT_CTL]));
 	
@@ -102,7 +106,8 @@ module control(clkin, clk, inst, instC, immC, typeC,
 	//the pc. uses the negative edge to update!
 	wire[31:0] pc_out;
 	pc_manager pc_real(.val1(busOut1), .imm(immC), ._type(typeC),
-		.clk(~clk), .enable(cal_ctl[BRCH_CTL]), .branch(do_brch), .stop(), .pc(pc_fetch), .pc2(), .pcOut(pc_out), .breakPipe(break_pipe));
+		.clk(~clk), .enable(cal_ctl[BRCH_CTL]), .branch(do_brch), .stop(), .pc(pc_fetch), .pc2(), .pcOut(pc_out), .breakPipe(break_pipe),
+		.pc_override(ovrd), .inst_data(instd), .inst_addr(insta));
 	tri_buf pc_tri(.in(pc_out), .out(busIn), .enable(wri_ctl[PC_CTL]));
 	
 	
