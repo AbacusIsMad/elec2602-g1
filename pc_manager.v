@@ -22,6 +22,7 @@ module pc_manager(val1, imm, _type, clk, reset, enable, branch, stop, pc, pc2, p
 			pc <= -2052;
 			breakPipe <= 1;
 			inst_addr <= 0;
+			pc_override <= 1;
 		end else begin //normal sequence
 			pc2 <= pc;
 			

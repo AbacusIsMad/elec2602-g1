@@ -46,26 +46,26 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	parameter f2 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum2.txt";
 	parameter f3 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum3.txt";
 	parameter f4 = "C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum4.txt";
-	eight_bit_ram#(.FILENAME(f1), .OFFSET(3))
+	eight_bit_ram#(.FILENAME(), .OFFSET(3))
 		r1(.data(mem_in[7:0]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
 		.enable(enable | pc_override), .we((we & s_enable[0]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[7:0]), .pc_q(pc_tmp[7:0]));
-	eight_bit_ram#(.FILENAME(f2), .OFFSET(2))
+	eight_bit_ram#(.FILENAME(), .OFFSET(2))
 		r2(.data(mem_in[15:8]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
 		.enable(enable | pc_override), .we((we & s_enable[1]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[15:8]), .pc_q(pc_tmp[15:8]));
-	eight_bit_ram#(.FILENAME(f3), .OFFSET(1))
+	eight_bit_ram#(.FILENAME(), .OFFSET(1))
 		r3(.data(mem_in[23:16]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
 		.enable(enable | pc_override), .we((we & s_enable[2]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[23:16]), .pc_q(pc_tmp[23:16]));
-	eight_bit_ram#(.FILENAME(f4), .OFFSET(0))
+	eight_bit_ram#(.FILENAME(), .OFFSET(0))
 		r4(.data(mem_in[31:24]), .mem_addr(mem_addr_tmp), .pc_addr(pc_addr),
 		.enable(enable | pc_override), .we((we & s_enable[3]) | pc_override),
 		.mem_clk(mem_clk), .pc_clk(pc_clk), .mem_q(mem_tmp[31:24]), .pc_q(pc_tmp[31:24]));
 	
 	//output ports
 	always @(posedge mem_clk) begin
-		if (reset) begin
+		if (pc_override) begin
 			hex_out <= 32'h80000000;
 			led_out <= 0;
 		end else if (enable) begin
@@ -85,7 +85,7 @@ module ram_dual(data, we, enable, mem_clk, size, sext, pc_clk, mem_addr,
 	always @(negedge real_clk) begin
 		if (reset) begin
 			stop <= 0;
-		end else if (mem_addr == 32'h0000080c) begin
+		end else if ((enable & we) && (mem_addr == 32'h0000080c)) begin
 			stop <= 1;
 		end
 	end
