@@ -85,6 +85,12 @@ Compiles (`riscv64-unknown-elf-gcc -O1`, custom linker script) to
 ```
 Instructions `0x30`-`0x64` take 14 + 1(jump penalty) = 15 clock cycles to execute. Repeating this 3,333,333 times gives 49,999,995 cycles spent within the for loop, The addition of `0x20`-`0x2c` and the jump at `0x68` adds 5 more cycles <sub>the branch penalty is still there, but it's been accounted for because `0x64` wouldn't jump at the last iteration</sub> to 50M. Thus if you have connected `hex_out` to your display of choice and your clock is 50Mhz you should see it increment precisely every second.
 
+This file is avaliable as `out/wait.txt`. I've made four other examples:
+1. `out0/add_2_numbers.*` asks for user input 2 times and displays the sum
+2. `out/5_sum.*` asks for input 5 times and displays sum. If at any time the use inputs `0`, the result is displayed prematurely.
+3. `out/play.*` starts off with all but one led on and waits for input. If the user inputs `0` then the empty spot moves to the right, otherwise it moves to the left. It wraps around.
+4. `out0/play.*` is the same as above, but compiled with no optimisations.
+
 ## What it has:
 * Support for all basic operations in RV32I, including
     * arithmatic with register-register and register-immediate
