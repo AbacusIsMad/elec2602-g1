@@ -21,6 +21,8 @@ I chose RISC-V because it is a load-store architecture so pipelining is a lot ea
 
 The top-level initialisation file `main_inst.v` is built for the [Altera DE1-SOC](http://de1-soc.terasic.com/).
 
+Built and tested on Quartus 21.1.
+
 ## Example
 
 The program below:
