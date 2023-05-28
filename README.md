@@ -16,6 +16,8 @@ There is also a hidden stage (0) where the machine spends 512 cycles to reset th
 
 I chose RISC-V because it is a load-store architecture so pipelining is a lot easier, but more importantly because I already had a toolchain setup before the project begun.
 
+The top-level initialisation file `main_inst.v` is built for the [Altera DE1-SOC](http://de1-soc.terasic.com/).
+
 ## Example
 
 The program below:
@@ -45,7 +47,7 @@ int main() {
 	return 0;
 }
 ```
-Compiles (`riscv64-unknown-elf-gcc -O1`) to
+Compiles (`riscv64-unknown-elf-gcc -O1`, custom linker script) to
 ```
    0:   7ff00113                li      sp,2047
    4:   00c000ef                jal     ra,0x10
@@ -109,4 +111,3 @@ Instructions `0x30`-`0x64` take 14 + 1(jump penalty) = 15 clock cycles to execut
     * Convert binary to ASCII and link the result file in the `$readmemh` call in `inst_rom`
     * Make the rom such that it's targetable by the memory editor, and load the binary in while the FPGA is running
 4. Upload, reset, see results
-
