@@ -7,6 +7,8 @@ module control_TB();
 	wire clkout;
 	wire[31:0] pc, inst, instC, immC;
 	wire[3:0] typeC;
+	wire[6:0] cal_ctl;
+	wire[4:0] wri_ctl;
 	wire[31:0] busOut1, busOut2, busIn;
 	wire do_brch, break_pipe;
 
@@ -29,7 +31,8 @@ module control_TB();
 		.busOut1(busOut1), .busOut2(busOut2), .busIn(busIn), .do_brch(do_brch), .break_pipe(break_pipe), .pc_fetch(pc),
 		.hex_out(hex), .led_out(led), .num_in(num_in), .num_clk(num_clk),
 		.block(block), .reset(reset),
-		.ovrd(override), .instd(inst_data), .insta(inst_addr)
+		.ovrd(override), .instd(inst_data), .insta(inst_addr),
+		.cal_ctl(cal_ctl), .wri_ctl(wri_ctl)
 		,.regs(regs)
 	);
 	

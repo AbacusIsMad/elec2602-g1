@@ -3,6 +3,7 @@ module control(clkin, clk, inst, instC, immC, typeC,
 	hex_out, led_out, num_in, num_clk,
 	block,
 	ovrd, instd, insta, reset,
+	cal_ctl, wri_ctl,
 	regs
 	);
 	parameter CTL_CAL = 7;
@@ -42,11 +43,11 @@ module control(clkin, clk, inst, instC, immC, typeC,
 	
 	
 	//control circuits
-	wire [CTL_CAL-1:0] cal_ctl;
+	output wire [CTL_CAL-1:0] cal_ctl;
 	control_calculate#(.CTL_CAL(CTL_CAL), .ZRO_OUT1(ZRO_OUT1), .ZRO_OUT2(ZRO_OUT2), .REG1_CTL(REG1_CTL), 
 		.REG2_CTL(REG2_CTL), .IMM_CTL(IMM_CTL), .RAMIN_CTL(RAMIN_CTL), .BRCH_CTL(BRCH_CTL))
 		cal_real(.inst(instC), ._type(typeC), .ctl(cal_ctl));
-	wire [CTL_WRI-1:0] wri_ctl;
+	output wire [CTL_WRI-1:0] wri_ctl;
 	control_write#(.CTL_WRI(CTL_WRI), .ZRO_IN(ZRO_IN), .ALU_CTL(ALU_CTL), .RAMOUT_CTL(RAMOUT_CTL),
 		.PC_CTL(PC_CTL), .REG_CTL(REG_CTL))
 		write_real(.inst(instC), ._type(typeC), .ctl(wri_ctl));

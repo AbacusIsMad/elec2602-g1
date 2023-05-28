@@ -5,7 +5,7 @@ module inst_rom(clk, addr, out);
 	
 	reg[31:0] rom[512-1:0];
 	initial begin
-		$readmemh("C:/Users/gengr/Desktop/code/ELEC2602/project/out/5_sum.txt", rom);
+		$readmemh("C:/Users/gengr/Desktop/code/ELEC2602/project/out/play.txt", rom);
 	end
 	
 	always @(posedge clk) begin
