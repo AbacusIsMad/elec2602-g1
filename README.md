@@ -1,7 +1,7 @@
 # 32-bit processor
 My final project! This is for ELEC2602 USYD (Verilog).
 
-![image](https://github.com/AbacusIsMad/elec2602-g1/assets/101756598/53a567d2-f374-4548-b823-581d3d935755)
+![image](https://github.com/AbacusIsMad/elec2602-g1/blob/main/readme_images/datapath.png)
 
 <sub>*not pictured - various enable signals and clocks that control everything</sub>
 
@@ -11,7 +11,7 @@ It's a instruction-pipelined processor with RISC-V architecture (RV32I) consisti
 2. Do memory manipulation/jumping
 3. Register write-back
 
-![image](https://github.com/AbacusIsMad/elec2602-g1/assets/101756598/572aaf40-2b99-4e72-8a81-040c03c18c3c)
+![image](https://github.com/AbacusIsMad/elec2602-g1/blob/main/readme_images/fsm.png)
 
 Stage 2 is triggered on the falling edge so that data dependencies don't happen. Jumping is also on stage 2 so that it only incurrs a 1-clock-cycle penalty (kinda shows on the FSM but not quite).
 
