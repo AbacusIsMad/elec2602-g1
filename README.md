@@ -1,7 +1,7 @@
 # 32-bit processor
 My final project! This is for ELEC2602 USYD (Verilog).
 
-![alt text](https://private-user-images.githubusercontent.com/101756598/241557494-63ee856f-d4fb-47e1-9e92-3a49a2875b27.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJrZXkxIiwiZXhwIjoxNjg1Mjc0Mzk4LCJuYmYiOjE2ODUyNzQwOTgsInBhdGgiOiIvMTAxNzU2NTk4LzI0MTU1NzQ5NC02M2VlODU2Zi1kNGZiLTQ3ZTEtOWU5Mi0zYTQ5YTI4NzViMjcucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQUlXTkpZQVg0Q1NWRUg1M0ElMkYyMDIzMDUyOCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyMzA1MjhUMTE0MTM4WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MGQ0YzM4MGVjNzYzMWJmZWYxZmVlNDU0MjZmNzVjOTVmZWQ3MjAzMDFmYTdiMTQ0ZGUxNzRiMWFlNTVjNzRhZSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.di132nu4XvDO1FALDnb3uX_KyfNLV9lnmbde-O-VXx4)
+![image](https://github.com/AbacusIsMad/elec2602-g1/assets/101756598/53a567d2-f374-4548-b823-581d3d935755)
 
 <sub>*not pictured - various enable signals and clocks that control everything</sub>
 
@@ -11,7 +11,7 @@ It's a instruction-pipelined processor with RISC-V architecture (RV32I) consisti
 2. Do memory manipulation/jumping
 3. Register write-back
 
-![alt text](https://private-user-images.githubusercontent.com/101756598/241557824-110bd280-e4d2-4ef0-b637-d79dd8003914.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJrZXkxIiwiZXhwIjoxNjg1Mjc0ODE2LCJuYmYiOjE2ODUyNzQ1MTYsInBhdGgiOiIvMTAxNzU2NTk4LzI0MTU1NzgyNC0xMTBiZDI4MC1lNGQyLTRlZjAtYjYzNy1kNzlkZDgwMDM5MTQucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQUlXTkpZQVg0Q1NWRUg1M0ElMkYyMDIzMDUyOCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyMzA1MjhUMTE0ODM2WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZDc5YjkyODVjODYxYmY4MTE5ZTA3MmZlNzkwZjI3NzZlOWEyMzdlMzkxZjRiMjM3ODg5YzRlYjNiOTM1NTc4NCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.cR93zzZV5ltdnp7Gu9pfrF2GzmMhRlQVF5_vfSLt2w8)
+![image](https://github.com/AbacusIsMad/elec2602-g1/assets/101756598/572aaf40-2b99-4e72-8a81-040c03c18c3c)
 
 Stage 2 is triggered on the falling edge so that data dependencies don't happen. Jumping is also on stage 2 so that it only incurrs a 1-clock-cycle penalty (kinda shows on the FSM but not quite).
 
